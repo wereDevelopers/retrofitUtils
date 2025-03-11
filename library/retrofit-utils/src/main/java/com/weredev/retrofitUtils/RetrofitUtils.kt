@@ -28,7 +28,7 @@ object RetrofitUtils {
                 Log.d(this.javaClass.simpleName,"Network -> executeWith304 NOT_MODIFIED")
                 Pair(response, false)
             }
-            else -> throw NetworkOperationException(response.code(), response.errorBody()?.toString() ?: "")
+            else -> throw NetworkOperationException(response.code(), response.errorBody()?.string() ?: "")
         }
     }
 
@@ -46,7 +46,7 @@ object RetrofitUtils {
             HttpURLConnection.HTTP_NOT_FOUND -> {
                 return executeWith304(retryCall)
             }
-            else -> throw NetworkOperationException(response.code(), response.errorBody()?.toString() ?: "")
+            else -> throw NetworkOperationException(response.code(), response.errorBody()?.string() ?: "")
         }
     }
 
@@ -64,7 +64,7 @@ object RetrofitUtils {
                 return true
             } else {
                 statusCode = response.code()
-                throw NetworkOperationException(statusCode, response.errorBody().toString())
+                throw NetworkOperationException(statusCode, response.errorBody()?.string() ?:"")
             }
         } catch (e: Exception) {
             throw NetworkOperationException(statusCode, e.message ?: e.toString())
@@ -80,7 +80,7 @@ object RetrofitUtils {
                 return response
             } else {
                 statusCode = response.code()
-                throw NetworkOperationException(response.code(), response.errorBody().toString())
+                throw NetworkOperationException(response.code(), response.errorBody()?.string()?:"")
             }
         } catch (e: Exception) {
             e.cause
